@@ -16,6 +16,7 @@
                 <label>Gênero</label>
                 <input type="text" name="genero" />
             </div>
+            <br>
             <button type="submit">Salvar</button>
         </form>
     </body>

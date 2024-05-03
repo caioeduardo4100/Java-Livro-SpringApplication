@@ -41,6 +41,7 @@ public class LivroController {
         return "/livros/insert";
     }
 
+    // Método para enviar os dados para o formulário
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public String insert(
         @RequestParam("titulo") String titulo,
@@ -52,6 +53,7 @@ public class LivroController {
 
         livroRepo.save(livro);
         
+        // Redireciona o fluxo da aplicação para outra rota
         return "redirect:/livros/list";
     }
 
@@ -68,9 +70,7 @@ public class LivroController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestParam("id") long id,
-        @RequestParam("titulo") String titulo,
-        @RequestParam("genero") String genero) {
+    public String update(@RequestParam("id") long id, @RequestParam("titulo") String titulo, @RequestParam("genero") String genero) {
 
         Optional<Livro> resultado = livroRepo.findById(id);
 
