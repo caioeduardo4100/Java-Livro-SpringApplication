@@ -7,11 +7,8 @@
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         <style>
             .container {
-                display: absolute;
-                top: 50%;
-                left: 50%;
-                transition: tr;
-
+               text-align: center;
+               padding-top: 15%;
             }
         </style>
     </head>
