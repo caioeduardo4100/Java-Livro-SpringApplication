@@ -2,12 +2,13 @@ package application.model;
 
 import java.util.Set;
 
-import jakarta.persistence.Entities;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @Table(name = "generos")
@@ -19,7 +20,7 @@ public class Genero {
     private String nome;
 
     @OneToMany(mappedBy = "genero")
-    private Iterable<Livro> livros;
+    private Set<Livro> livros;
 
     public long getId() {
         return id;
