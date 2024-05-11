@@ -21,4 +21,20 @@ public class GeneroController {
         ui.addAttribute("generos", generoRepo.findAll());
         return "/generos/list";
     }
+    
+    @RequestMapping("/insert")
+    public String insert() {
+        return "/generos/insert";
+    }
+
+    // Método de request para inserir os dados na página do formulário dos gêneros
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    public String insert(@RequestParam("nome") String nome) {
+        Genero genero = new Genero();
+        genero.setNome(nome);
+
+        generoRepo.save(genero);
+        return "redirect:/generos/list";
+    }
+
 }
