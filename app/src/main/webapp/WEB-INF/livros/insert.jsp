@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -10,13 +11,16 @@
         <form action="/livros/insert" method="post">
             <div>
                 <label>Título</label>
-                <input type="text" name="titulo" />
+                <input type="text" name="titulo" autocomplete="off" />
             </div>
             <div>
                 <label>Gênero</label>
-                <input type="text" name="genero" />
+                <select name="genero">
+                    <c:forEach var="g" items="${generos}">
+                        <option value="${g.id}">${g.nome}</option>
+                    </c:forEach>
+                </select>
             </div>
-            <br>
             <button type="submit">Salvar</button>
         </form>
     </body>

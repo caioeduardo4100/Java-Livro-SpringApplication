@@ -39,9 +39,9 @@ public class Livro {
    
     public Genero getGenero() {
         return genero;
+    }   
+
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
-
-    
-
-    
 }

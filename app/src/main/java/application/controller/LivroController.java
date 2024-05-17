@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import application.model.Genero;
 import application.model.Livro;
+import application.repository.GeneroRepository;
 import application.repository.LivroRepository;
 
 @Controller
@@ -18,6 +20,9 @@ import application.repository.LivroRepository;
 public class LivroController {
     @Autowired
     private LivroRepository livroRepo;
+
+    @Autowired
+    private GeneroRepository generoRepo;
 
     @RequestMapping("/list")
     public String list(Model ui) {
@@ -36,7 +41,8 @@ public class LivroController {
     }
 
     @RequestMapping("/insert")
-    public String insert() {
+    public String insert(Model ui) {
+        ui.addAttribute("generos", generoRepo.findAll());
         return "/livros/insert";
     }
 
@@ -44,15 +50,18 @@ public class LivroController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public String insert(
         @RequestParam("titulo") String titulo,
-        @RequestParam("genero") String genero) {
+        @RequestParam("genero") long genero) {
         
-        Livro livro = new Livro();
-        livro.setTitulo(titulo);
-        //livro.setGenero(genero);
+        Optional<Genero> resultado = generoRepo.findById(genero);
 
-        livroRepo.save(livro);
+        if(resultado.isPresent()) {
+            Livro livro = new Livro();
+            livro.setTitulo(titulo);
+            livro.setGenero(resultado.get());
+
+            livroRepo.save(livro);
+        }
         
-        // Redireciona o fluxo da aplicação para outra rota
         return "redirect:/livros/list";
     }
 
@@ -62,19 +71,22 @@ public class LivroController {
 
         if(resultado.isPresent()) {
             ui.addAttribute("livro", resultado.get());
+            ui.addAttribute("generos", generoRepo.findAll());
             return "/livros/update";    
         }
-
+        
         return "redirect:/livros/list";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestParam("id") long id, @RequestParam("titulo") String titulo, @RequestParam("genero") String genero) {
+    public String update(@RequestParam("id") long id, @RequestParam("titulo") String titulo, @RequestParam("genero") long genero) {
 
         Optional<Livro> resultado = livroRepo.findById(id);
 
         if(resultado.isPresent()) {
+            Optional<Genero> resultGenero = generoRepo.findById(genero);
             resultado.get().setTitulo(titulo);
+            resultado.get().setGenero(resultGenero.get());
            // resultado.get().setGenero(genero);
 
             livroRepo.save(resultado.get());
