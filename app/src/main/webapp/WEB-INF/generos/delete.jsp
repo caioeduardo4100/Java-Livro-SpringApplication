@@ -3,22 +3,19 @@
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8" />
-        <title>Novo Gênero</title>
+        <title>Remover Gênero</title>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
     </head>
     <body>
         <div class="container">
-        <h1>Novo Gênero</h1>
-        <form action="/generos/insert" method="post">
-            <div>
-                <label class="form-label">Nome</label>
-                <input class="form-control" type="text" name="nome" autocomplete="off"/>
-            </div>
+        <h1>Remover Gênero</h1>
+        <p>Tem certeza que deseja excluir o gênero ${genero.nome}</p>
+        <form action="/generos/delete" method="post">
+            <input type="hidden" name="id" value="${genero.id}">
             <hr />
             <a href="/generos/list" class="btn btn-secondary">Voltar</a>
-            <button class="btn btn-success"type="submit">Salvar</button>
+            <button class="btn btn-danger" type="submit">Excluir</button>
         </form>
         </div>
     </body>
 </html>
-

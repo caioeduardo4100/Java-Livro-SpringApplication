@@ -91,14 +91,12 @@ public class LivroController {
             ui.addAttribute("livro", resultado.get());
             return "/livros/delete";    
         }
-
         return "redirect:/livros/list";
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@RequestParam("id") long id) {
         livroRepo.deleteById(id);
-
         return "redirect:/livros/list";
     }
 }

@@ -8,15 +8,16 @@
     </head>
     <body>
         <div class="container">
-        <h1>Novo Gênero</h1>
-        <form action="/generos/insert" method="post">
+        <h1>Editar Gênero</h1>
+        <form action="/generos/update" method="post">
+            <input type="hidden" name="id" value="${genero.id}">
             <div>
                 <label class="form-label">Nome</label>
-                <input class="form-control" type="text" name="nome" autocomplete="off"/>
+                <input class="form-control" type="text" name="nome" value="${genero.id}" />
             </div>
             <hr />
             <a href="/generos/list" class="btn btn-secondary">Voltar</a>
-            <button class="btn btn-success"type="submit">Salvar</button>
+            <button class="btn btn-warning"type="submit">Salvar</button>
         </form>
         </div>
     </body>
