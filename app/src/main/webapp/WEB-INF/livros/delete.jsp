@@ -12,7 +12,7 @@
         </p>
         <form action="/livros/delete" method="post">
             <input type="hidden" name="id" value="${livro.getId()}" />
-            <a href="/livro/list">Voltar</a>
+            <a href="/livros/list">Voltar</a>
             <button type="submit">Excluir</button>
         </form>
     </body>
