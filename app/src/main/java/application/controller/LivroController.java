@@ -1,6 +1,7 @@
 package application.controller;
 
 import java.util.Optional;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import application.model.Genero;
 import application.model.Livro;
+import application.model.Autor;
 import application.repository.GeneroRepository;
 import application.repository.LivroRepository;
+import application.repository.AutorRepository;
 
 @Controller
 @RequestMapping("/livros")
@@ -23,6 +26,9 @@ public class LivroController {
 
     @Autowired
     private GeneroRepository generoRepo;
+
+    @Autowired
+    private AutorRepository autorRepo;
 
     @RequestMapping("/list")
     public String list(Model ui) {
@@ -43,6 +49,7 @@ public class LivroController {
     @RequestMapping("/insert")
     public String insert(Model ui) {
         ui.addAttribute("generos", generoRepo.findAll());
+        ui.addAttribute("autores", autorRepo.findAll());
         return "/livros/insert";
     }
 
@@ -50,7 +57,8 @@ public class LivroController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public String insert(
         @RequestParam("titulo") String titulo,
-        @RequestParam("genero") long genero) {
+        @RequestParam("genero") long genero,
+        @RequestParam("autores") long[] autores) {
         
         Optional<Genero> resultado = generoRepo.findById(genero);
 
@@ -58,6 +66,13 @@ public class LivroController {
             Livro livro = new Livro();
             livro.setTitulo(titulo);
             livro.setGenero(resultado.get());
+            
+            for(long a : autores) {
+                Optional<Autor> result = autorRepo.findById(a);
+                if(result.isPresent()) {
+                    livro.getAutores().add(result.get());
+                }
+            }
 
             livroRepo.save(livro);
         }
@@ -71,7 +86,9 @@ public class LivroController {
 
         if(resultado.isPresent()) {
             ui.addAttribute("livro", resultado.get());
+            
             ui.addAttribute("generos", generoRepo.findAll());
+            ui.addAttribute("autores", autorRepo.findAll());
             return "/livros/update";    
         }
         
@@ -79,17 +96,29 @@ public class LivroController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestParam("id") long id, @RequestParam("titulo") String titulo, @RequestParam("genero") long genero) {
+    public String update(@RequestParam("id") long id, 
+    @RequestParam("titulo") String titulo, 
+    @RequestParam("genero") long genero, 
+    @RequestParam("autores") long[] autores) {
 
         Optional<Livro> resultado = livroRepo.findById(id);
 
         if(resultado.isPresent()) {
             Optional<Genero> resultGenero = generoRepo.findById(genero);
-            resultado.get().setTitulo(titulo);
-            resultado.get().setGenero(resultGenero.get());
-           // resultado.get().setGenero(genero);
-
-            livroRepo.save(resultado.get());
+            if(resultGenero.isPresent()) {
+                resultado.get().setTitulo(titulo);
+                resultado.get().setGenero(resultGenero.get());
+                resultado.get().setAutores(new HashSet<Autor>());
+    
+                for(long a : autores) {
+                    Optional<Autor> result = autorRepo.findById(a);
+                    if(result.isPresent()) {
+                        resultado.get().getAutores().add(result.get());
+                    }
+                }
+                livroRepo.save(resultado.get());
+            }
+           
         }
 
         return "redirect:/livros/list";

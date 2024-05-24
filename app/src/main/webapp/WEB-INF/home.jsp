@@ -17,6 +17,7 @@
             <h1>Olá Spring!!!</h1>
             <a href="/livros/list" class="btn btn-primary">Livros</a>
             <a href="/generos/list" class="btn btn-secondary">Gêneros</a>
+            <a href="autores/list" class="btn btn-warning">Autores</a>
         </div>
     </body>
 </html>
